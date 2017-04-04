@@ -1,0 +1,7 @@
+<div class="week-grid">
+  <% Range.new(@start, @start.advance(days: 6)).each do |day| %>
+    <%= content_tag :div, class: "day-grid" do %>
+      <%= day.strftime("%a %d %b") %>
+    <% end %>
+  <% end %>
+</div>
