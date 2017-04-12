@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @block.type %>
+</p>
+
+<p>
+  <strong>Start time:</strong>
+  <%= @block.start_time %>
+</p>
+
+<p>
+  <strong>Duration:</strong>
+  <%= @block.duration %>
+</p>
+
+<p>
+  <strong>Event:</strong>
+  <%= @block.event %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @block.title %>
+</p>
+
+<%= link_to 'Edit', edit_block_path(@block) %> |
+<%= link_to 'Back', blocks_path %>
