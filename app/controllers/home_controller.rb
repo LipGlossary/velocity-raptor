@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
   def index
-    # TODO: timezone math
+    now = Time.current.localtime(user_utc_offset)
 
-    @start = DateTime.current.beginning_of_day
+    @start = now.to_datetime.beginning_of_day
   end
 end
