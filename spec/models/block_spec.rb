@@ -30,4 +30,8 @@ RSpec.describe Block, type: :model do
     describe "get duration"
     describe "get title"
   end
+
+  describe "before_save" do
+    describe ".clean_event_fields"
+  end
 end

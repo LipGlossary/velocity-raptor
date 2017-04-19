@@ -8,6 +8,8 @@ class Block < ApplicationRecord
   validates :start_time, presence: true
   validates :title, allow_nil: true, format: /\S+/
 
+  before_save :clean_event_fields, if: :scheduled_block?
+
   def duration
     event&.duration || self[:duration]
   end
@@ -18,5 +20,16 @@ class Block < ApplicationRecord
 
   def title=(val)
     self[:title] = val
+  end
+
+  def scheduled_block?
+    event.present?
+  end
+
+  private
+
+  def clean_event_fields
+    self[:duration] = nil
+    self[:title] = nil
   end
 end
