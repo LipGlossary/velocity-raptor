@@ -7,4 +7,16 @@ class Block < ApplicationRecord
 
   validates :start_time, presence: true
   validates :title, allow_nil: true, format: /\S+/
+
+  def duration
+    event&.duration || self[:duration]
+  end
+
+  def title
+    event&.title || self[:title]
+  end
+
+  def title=(val)
+    self[:title] = val
+  end
 end

@@ -25,4 +25,9 @@ RSpec.describe Block, type: :model do
     it { should allow_values(nil, "foo").for(:title) }
     it { should_not allow_value("").for(:title) }
   end
+
+  describe "attributes" do
+    describe "get duration"
+    describe "get title"
+  end
 end
