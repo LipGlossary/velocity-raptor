@@ -22,10 +22,33 @@ module Timeslotted
   included do
     include ActiveModel::Validations
 
+    def duration
+      self[:duration]
+    end
+
+    def duration=(val)
+      self[:duration] = [round_to_timeslot(time: val), 900].max
+    end
+
+    def start_time
+      self[:start_time]
+    end
+
+    def start_time=(val)
+      self[:start_time] = round_to_timeslot(time: val)
+    end
+
     validates :duration, presence: true, numericality: { greater_than_or_equal_to: 900 }, timeslot: true
     validates :start_time, timeslot: true
+
+    delegate :round_to_timeslot, to: :class
   end
 
   class_methods do
+    # time: nil, Time, DateTime, String, Numeric
+    def round_to_timeslot(time:)
+      return nil if time.to_s.empty?
+      [time.to_i / 900 * 900, 0].max
+    end
   end
 end
