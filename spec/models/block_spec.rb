@@ -4,6 +4,11 @@ require 'shared_examples/timeslotted'
 RSpec.describe Block, type: :model do
   it_behaves_like "Timeslotted"
 
+  include_context "Timeslotted" do
+    it_behaves_like "timeslot", :duration, min: 900
+    it_behaves_like "timeslot", :start_time
+  end
+
   describe "table" do
     # it { should have_db_column(:type).of_type(:string) }
     # it { should have_db_index(:type) }
@@ -19,9 +24,6 @@ RSpec.describe Block, type: :model do
   end
 
   describe "validations" do
-    it { should validate_presence_of(:start_time) }
-    it { should allow_value(0).for(:start_time) }
-    it { should_not allow_values(nil, "").for(:start_time) }
     it { should allow_values(nil, "foo").for(:title) }
     it { should_not allow_value("").for(:title) }
   end

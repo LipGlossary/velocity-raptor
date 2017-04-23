@@ -1,11 +1,12 @@
 class Block < ApplicationRecord
   include Timeslotted
+  acts_as_timeslot :duration, min: 900
+  acts_as_timeslot :start_time
 
   default_scope { order(start_time: :asc) }
 
   belongs_to :event
 
-  validates :start_time, presence: true
   validates :title, allow_nil: true, format: /\S+/
 
   before_save :clean_event_fields, if: :scheduled_block?
