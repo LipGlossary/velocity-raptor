@@ -24,11 +24,21 @@ RSpec.describe BlocksController, type: :controller do
   # Block. As you add validations to Block, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {
+      duration: 1.hour,
+      event_id: nil,
+      start_time: Time.current,
+      title: "Foo Block",
+    }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {
+      duration: 0,
+      event_id: nil,
+      start_time: 0,
+      title: "",
+    }
   }
 
   # This should return the minimal set of values that should be in the session
@@ -103,14 +113,20 @@ RSpec.describe BlocksController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {
+          title: "New Title",
+          duration: 2.hours.to_i,
+          start_time: Time.current.tomorrow.beginning_of_day.to_i,
+        }
       }
 
       it "updates the requested block" do
         block = Block.create! valid_attributes
         put :update, params: {id: block.to_param, block: new_attributes}, session: valid_session
         block.reload
-        skip("Add assertions for updated state")
+        new_attributes.each do |attribute, value|
+          expect(block[attribute]).to eq(value)
+        end
       end
 
       it "assigns the requested block as @block" do

@@ -17,10 +17,10 @@
   <tbody>
     <% @blocks.each do |block| %>
       <tr>
-        <td><%= block.type %></td>
+        <td><%= block.scheduled_block? ? "ScheduledBlock" : "FreeBlock" %></td>
         <td><%= block.start_time %></td>
         <td><%= block.duration %></td>
-        <td><%= block.event %></td>
+        <td><%= block.event || "none" %></td>
         <td><%= block.title %></td>
         <td><%= link_to 'Show', block %></td>
         <td><%= link_to 'Edit', edit_block_path(block) %></td>

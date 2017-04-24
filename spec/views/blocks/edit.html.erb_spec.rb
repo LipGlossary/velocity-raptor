@@ -3,10 +3,11 @@ require 'rails_helper'
 RSpec.describe "blocks/edit", type: :view do
   before(:each) do
     @block = assign(:block, Block.create!(
-      :type => "",
+      :type => nil,
       :duration => "",
       :event => nil,
-      :title => "MyString"
+      :title => "MyString",
+      :start_time => Time.current,
     ))
   end
 

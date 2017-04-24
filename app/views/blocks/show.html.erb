@@ -2,7 +2,7 @@
 
 <p>
   <strong>Type:</strong>
-  <%= @block.type %>
+  <%= @block.scheduled_block? ? "ScheduledBlock" : "FreeBlock" %>
 </p>
 
 <p>
@@ -17,7 +17,7 @@
 
 <p>
   <strong>Event:</strong>
-  <%= @block.event %>
+  <%= @block.event || "none" %>
 </p>
 
 <p>
