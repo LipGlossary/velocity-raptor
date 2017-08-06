@@ -39,7 +39,7 @@ module Timeslotted
         self.read_attribute attr_str
       end
 
-      define_method attr_str + "=" do |val|
+      define_method "#{attr_str}=" do |val|
         self.write_attribute attr_str, round_to_timeslot(time: val, allow_nil: allow_nil, min: min)
       end
 
