@@ -1,0 +1,13 @@
+<main id="calendar">
+  <% 7.times do |i| %>
+    <% day = @today.in(i.days) %>
+    <section>
+      <h3><%= day %></h3>
+      <% (24 * 4).times do |j| %>
+        <div>
+          <p><%= day.in(j.minutes) %></p>
+        </div>
+      <% end %>
+    </section>
+  <% end %>
+</main>

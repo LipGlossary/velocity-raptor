@@ -1,0 +1,26 @@
+// Place all the styles related to the calendar controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#calendar {
+  display: flex;
+  justify-content: space-between;
+
+  section {
+    &:nth-child(2n) {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    div:nth-child(8n+5),
+    div:nth-child(8n+6),
+    div:nth-child(8n+7),
+    div:nth-child(8n+8) {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  h3, p {
+    padding: 1rem;
+    margin: 0;
+  }
+}
