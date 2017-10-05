@@ -1,6 +1,6 @@
 class Block < ApplicationRecord
   include Timeslotted
-  acts_as_timeslot :duration, min: 900
+  acts_as_timeslot :duration, :relative, min: 900
   acts_as_timeslot :start_time
 
   default_scope { order(start_time: :asc) }

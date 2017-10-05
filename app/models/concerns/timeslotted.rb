@@ -8,12 +8,12 @@ module Timeslotted
       return if record.errors.any?
       return if options[:allow_nil] && value.nil?
 
-      unless 0 <= value
+      unless 0 <= value.to_i
         record.errors.add attr_name, "must be greater than or equal to 0"
         return
       end
 
-      unless (value % 15.minutes).zero?
+      unless (value.to_i % 15.minutes).zero?
         record.errors.add attr_name, "is not an even 15 minute interval"
       end
     end
@@ -32,18 +32,35 @@ module Timeslotted
       [time.to_i / 900 * 900, min].max
     end
 
-    def acts_as_timeslot (attr_name, allow_nil: false, min: 0)
+    def acts_as_timeslot (attr_name, *args)
       attr_str = attr_name.to_s
+      options, flags = args.partition { |arg| arg.is_a?(Hash) }
+      options = options.inject({}, :merge)
 
-      define_method attr_str do
-        self.read_attribute attr_str
-      end
+      relative = flags.include?(:relative)
+      absolute = flags.include?(:absolute) || !relative
+      presence = flags.include?(:presence) || options.fetch(:presence, true)
+      allow_nil = flags.include?(:allow_nil) || options.fetch(:allow_nil, !presence)
+      min = options.fetch(:min, 0)
 
-      define_method "#{attr_str}=" do |val|
-        if val.is_a?(Hash)
-          val = DateTime.new(*val.values.compact)
+      if absolute
+        define_method attr_str do
+          self.read_attribute(attr_str) ? Time.at(self.read_attribute(attr_str)) : nil
         end
-        self.write_attribute attr_str, round_to_timeslot(time: val, allow_nil: allow_nil, min: min)
+
+        define_method "#{attr_str}=" do |val|
+          val = Time.new(*val.values.take_while(&:present?)) if val.is_a?(Hash)
+
+          self.write_attribute attr_str, round_to_timeslot(time: val, allow_nil: allow_nil, min: min)
+        end
+      else # relative
+        define_method attr_str do
+          self.read_attribute(attr_str).seconds
+        end
+
+        define_method "#{attr_str}=" do |val|
+          self.write_attribute attr_str, round_to_timeslot(time: val, allow_nil: allow_nil, min: min)
+        end
       end
 
       validates attr_name,

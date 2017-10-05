@@ -1,7 +1,7 @@
 class Event < ApplicationRecord
   include Timeslotted
-  acts_as_timeslot :scheduled_time, allow_nil: true
-  acts_as_timeslot :duration, min: 900
+  acts_as_timeslot :scheduled_time, :allow_nil
+  acts_as_timeslot :duration, :relative, min: 900
 
   has_many :blocks, dependent: :destroy
 
