@@ -5,7 +5,7 @@ class Block < ApplicationRecord
 
   default_scope { order(start_time: :asc) }
 
-  belongs_to :event
+  belongs_to :event, optional: true
 
   validates :title, allow_nil: true, format: /\S+/
 

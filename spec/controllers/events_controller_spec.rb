@@ -121,7 +121,27 @@ RSpec.describe EventsController, type: :controller do
         }
       }
 
-      it "updates the requested event" do
+      let(:new_form_attributes) {
+        st = Time.current.tomorrow.beginning_of_day
+        {
+          duration: 2.hours.to_i,
+          period: 1.week.to_i,
+          scheduled_time: {year: st.year, month: st.month, day: st.day, hour: st.hour, minute: st.minute},
+          title: "New Title",
+        }
+      }
+
+      it "updates the requested event with scheduled_time in seconds" do
+        event = Event.create! valid_attributes
+        put :update, params: {id: event.to_param, event: new_attributes}, session: valid_session
+        event.reload
+        new_attributes.each do |attribute, value|
+          expect(event[attribute]).to eq(value)
+        end
+        expect(event.blocks.size).to eq(1)
+      end
+
+      it "updates the requested event with scheduled_time in picked date" do
         event = Event.create! valid_attributes
         put :update, params: {id: event.to_param, event: new_attributes}, session: valid_session
         event.reload

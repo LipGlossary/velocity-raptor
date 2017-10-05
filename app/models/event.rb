@@ -11,6 +11,10 @@ class Event < ApplicationRecord
   after_save :reschedule_blocks, if: -> { scheduled_time_changed? }
   after_destroy :unschedule_blocks
 
+  def scheduled?
+    scheduled_time.present?
+  end
+
   def start_times
     blocks.pluck(:start_time)
   end

@@ -69,6 +69,10 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:scheduled_time, :period, :duration, :title)
+      params
+        .require(:event)
+        .permit(:scheduled, :scheduled_time, :period, :duration, :title, scheduled_time: [:year, :month, :day, :hour, :minute])
+        .tap { |p| p[:scheduled_time] = nil if p[:scheduled] == "0" }
+        .slice!(:scheduled_time, :period, :duration, :title)
     end
 end

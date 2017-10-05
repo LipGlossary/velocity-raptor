@@ -40,6 +40,9 @@ module Timeslotted
       end
 
       define_method "#{attr_str}=" do |val|
+        if val.is_a?(Hash)
+          val = DateTime.new(*val.values.compact)
+        end
         self.write_attribute attr_str, round_to_timeslot(time: val, allow_nil: allow_nil, min: min)
       end
 
@@ -49,5 +52,13 @@ module Timeslotted
         numericality: { greater_than_or_equal_to: min },
         timeslot: true
     end
+  end
+
+  private
+
+  def hash_to_time(hash: {})
+    args = %w(year month day hour minute).map { |key| hash[key] }.take_while(&:present?)
+
+    Time.new(*args) if args.any?
   end
 end

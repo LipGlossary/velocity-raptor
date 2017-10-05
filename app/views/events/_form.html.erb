@@ -12,8 +12,18 @@
   <% end %>
 
   <div class="field">
+    <%= f.label :scheduled, "Schedule?" %>
+    <%= f.check_box :scheduled? %>
+  </div>
+  <div class="field">
     <%= f.label :scheduled_time %>
-    <%= f.datetime_select :scheduled_time %>
+    <%= select_datetime event.scheduled_time, {
+      add_month_numbers: true,
+      include_blank: true,
+      minute_step: 15,
+      prefix: :"event[scheduled_time]",
+      prompt: true,
+    } %>
   </div>
 
   <div class="field">
