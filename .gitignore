@@ -16,5 +16,8 @@
 # Ignore Byebug command history file.
 .byebug_history
 
+# Ignore local rspec configuration
+spec/examples.txt
+
 # Ignore local vscode configuration
 .vscode/
