@@ -45,7 +45,7 @@ module Timeslotted
 
       if absolute
         define_method attr_str do
-          self.read_attribute(attr_str) ? Time.at(self.read_attribute(attr_str)) : nil
+          (attr = self.read_attribute(attr_str)) ? Time.at(attr) : nil
         end
 
         define_method "#{attr_str}=" do |val|
@@ -55,7 +55,7 @@ module Timeslotted
         end
       else # relative
         define_method attr_str do
-          self.read_attribute(attr_str).seconds
+          (attr = self.read_attribute(attr_str)) ? attr.seconds : nil
         end
 
         define_method "#{attr_str}=" do |val|
