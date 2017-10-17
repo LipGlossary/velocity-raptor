@@ -9,7 +9,7 @@ class Block < ApplicationRecord
 
   validates :title, allow_nil: true, format: /\S+/
 
-  before_save :clean_event_fields, if: :scheduled_block?
+  before_save :clean_event_fields, if: :scheduled?
 
   def duration
     event&.duration || self[:duration]
@@ -23,7 +23,7 @@ class Block < ApplicationRecord
     self[:title] = val
   end
 
-  def scheduled_block?
+  def scheduled?
     event.present?
   end
 
