@@ -11,7 +11,7 @@ RSpec.describe Event, type: :model do
 
   describe "table" do
     it { should have_db_column(:duration).of_type(:integer).with_options(default: 900, null: false) }
-    it { should have_db_column(:period).of_type(:integer).with_options(default: 0, null: false) }
+    it { should have_db_column(:period).of_type(:integer) }
     it { should have_db_column(:scheduled_time).of_type(:integer) }
     it { should have_db_column(:title).of_type(:string).with_options(null: false) }
   end
