@@ -43,16 +43,18 @@ shared_examples_for "Timeslotted" do
       end
     end
 
-    it "does not allow a value less than #{min}" do
-      obj = described_class.new(attr_name => min)
-      obj.valid?
-      expect(obj[attr_name]).to eq min
-      expect(obj.errors.include?(attr_name)).to eq false
+    if min > 0
+      it "does not allow a value less than #{min}" do
+        obj = described_class.new(attr_name => min)
+        obj.valid?
+        expect(obj[attr_name]).to eq min
+        expect(obj.errors.include?(attr_name)).to eq false
 
-      obj = described_class.new(attr_name => min.to_i - 1)
-      obj.valid?
-      expect(obj[attr_name]).to eq min
-      expect(obj.errors.include?(attr_name)).to eq false
+        obj = described_class.new(attr_name => min.to_i - 1)
+        obj.valid?
+        expect(obj[attr_name]).to eq min
+        expect(obj.errors.include?(attr_name)).to eq false
+      end
     end
 
     it "gets sensible values from setting sensible values" do

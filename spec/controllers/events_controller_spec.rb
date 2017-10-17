@@ -25,9 +25,6 @@ RSpec.describe EventsController, type: :controller do
   # adjust the attributes here as well.
   let(:valid_attributes) {
     {
-      duration: 1.hour,
-      period: 0,
-      scheduled_time: nil,
       title: "Foo Event",
     }
   }
@@ -35,8 +32,8 @@ RSpec.describe EventsController, type: :controller do
   let(:invalid_attributes) {
     {
       duration: 0,
-      period: nil,
-      scheduled_time: nil,
+      period: -1,
+      scheduled_time: -1,
       title: "",
     }
   }
@@ -115,7 +112,7 @@ RSpec.describe EventsController, type: :controller do
       let(:new_attributes) {
         {
           duration: 2.hours.to_i,
-          period: 1.week.to_i,
+          period: nil,
           scheduled_time: Time.current.tomorrow.beginning_of_day.to_i,
           title: "New Title",
         }
@@ -125,7 +122,7 @@ RSpec.describe EventsController, type: :controller do
         st = Time.current.tomorrow.beginning_of_day
         {
           duration: 2.hours.to_i,
-          period: 1.week.to_i,
+          period: nil,
           scheduled_time: {year: st.year, month: st.month, day: st.day, hour: st.hour, minute: st.minute},
           title: "New Title",
         }
