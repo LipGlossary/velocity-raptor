@@ -26,7 +26,7 @@ class Event < ApplicationRecord
   end
 
   def schedule_blocks
-    blocks.create(start_time: scheduled_time)
+    blocks.create(start_time: scheduled_time) if scheduled_time.present?
   end
 
   def reschedule_blocks
