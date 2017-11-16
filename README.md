@@ -1,24 +1,18 @@
-# README
+# Velocity Raptor
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Development
 
-Things you may want to cover:
+### VS Code
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+#### `rebornix.ruby` extension configuration
+``` json
+{
+  "ruby.lint": {
+    "rubocop": {
+      "lint": true,
+      "rails": true
+    },
+    "ruby": false  // Runs ruby -wc
+  }
+}
+```
