@@ -14,6 +14,7 @@ jobs:
           PGHOST: 127.0.0.1
           PGUSER: circle-ci
           RAILS_ENV: test
+          BUNDLE_PATH: vendor/bundle
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -37,14 +38,20 @@ jobs:
 
       - run:
           name: bundle install
-          command: |
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
+          command: bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
 
       - save_cache:
           name: store bundle cache
-          paths:
-            - ./vendor/bundle
           key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - run:
+          name: run rubocop
+          command: bundle exec rubocop
 
       - run:
           name: wait for database
