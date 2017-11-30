@@ -9,7 +9,7 @@ class Event < ApplicationRecord
   has_many :blocks, dependent: :destroy
 
   validates :title, presence: true, format: /\S+/
-  validate :period_cannot_be_less_than_duration
+  validate :period_cannot_be_less_than_duration, if: -> { period && period < duration }
 
   after_save :reschedule_blocks, if: -> { scheduled_time_changed? || period_changed? }
   after_destroy :unschedule_blocks
@@ -46,8 +46,6 @@ class Event < ApplicationRecord
   end
 
   def period_cannot_be_less_than_duration
-    if period && period < duration
-      errors.add(:period, "can't be less than duration")
-    end
+    errors.add(:period, "can't be less than duration")
   end
 end

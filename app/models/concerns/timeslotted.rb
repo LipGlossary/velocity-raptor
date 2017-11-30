@@ -27,23 +27,27 @@ module Timeslotted
 
   class_methods do
     # time: nil, Time, DateTime, String, Numeric
-    def round_to_timeslot(time:, allow_nil: false, min: 0)
+    def round_to_timeslot (time:, allow_nil: false, min: 0)
       return nil if allow_nil && time.to_s.empty?
       [time.to_i / 900 * 900, min].max
     end
 
-    def acts_as_timeslot (attr_name, *args)
+    def acts_as_timeslot (attr_name, *flags, **options)
       attr_str = attr_name.to_s
-      options, flags = args.partition { |arg| arg.is_a?(Hash) }
-      options = options.inject({}, :merge)
 
-      relative = flags.include?(:relative)
-      absolute = flags.include?(:absolute) || !relative
-      presence = flags.include?(:presence) || options.fetch(:presence, true)
-      allow_nil = flags.include?(:allow_nil) || options.fetch(:allow_nil, !presence)
+      presence = flags.include?(:presence) || options.fetch(:presence, false)
+      allow_nil = !presence && (flags.include?(:allow_nil) || options.fetch(:allow_nil, false))
       min = options.fetch(:min, 0)
 
-      if absolute
+      if flags.include?(:relative)
+        define_method attr_str do
+          (attr = self.read_attribute(attr_str)) ? attr.seconds : nil
+        end
+
+        define_method "#{attr_str}=" do |val|
+          self.write_attribute attr_str, round_to_timeslot(time: val, allow_nil: allow_nil, min: min)
+        end
+      else # absolute
         define_method attr_str do
           (attr = self.read_attribute(attr_str)) ? Time.at(attr) : nil
         end
@@ -53,18 +57,10 @@ module Timeslotted
 
           self.write_attribute attr_str, round_to_timeslot(time: val, allow_nil: allow_nil, min: min)
         end
-      else # relative
-        define_method attr_str do
-          (attr = self.read_attribute(attr_str)) ? attr.seconds : nil
-        end
-
-        define_method "#{attr_str}=" do |val|
-          self.write_attribute attr_str, round_to_timeslot(time: val, allow_nil: allow_nil, min: min)
-        end
       end
 
       validates attr_name,
-        presence: !allow_nil,
+        presence: presence,
         allow_nil: allow_nil,
         numericality: { greater_than_or_equal_to: min },
         timeslot: true
