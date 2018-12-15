@@ -10,9 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20171015185748) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "blocks", force: :cascade do |t|
+    t.string   "type"
+    t.integer  "event_id"
+    t.integer  "start_time", null: false
+    t.integer  "duration"
+    t.string   "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_blocks_on_event_id", using: :btree
+    t.index ["type"], name: "index_blocks_on_type", using: :btree
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.integer  "scheduled_time"
+    t.integer  "period"
+    t.integer  "duration",       default: 900, null: false
+    t.string   "title",                        null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
+  add_foreign_key "blocks", "events"
 end
