@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @block.scheduled_block? ? "ScheduledBlock" : "FreeBlock" %>
+</p>
+
+<p>
+  <strong>Start time:</strong>
+  <%= @block.start_time %>
+</p>
+
+<p>
+  <strong>Duration:</strong>
+  <%= @block.duration %>
+</p>
+
+<p>
+  <strong>Event:</strong>
+  <%= @block.event || "none" %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @block.title %>
+</p>
+
+<%= link_to 'Edit', edit_block_path(@block) %> |
+<%= link_to 'Back', blocks_path %>

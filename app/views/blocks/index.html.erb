@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Blocks</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Start time</th>
+      <th>Duration</th>
+      <th>Event</th>
+      <th>Title</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @blocks.each do |block| %>
+      <tr>
+        <td><%= block.scheduled_block? ? "ScheduledBlock" : "FreeBlock" %></td>
+        <td><%= block.start_time %></td>
+        <td><%= block.duration %></td>
+        <td><%= block.event || "none" %></td>
+        <td><%= block.title %></td>
+        <td><%= link_to 'Show', block %></td>
+        <td><%= link_to 'Edit', edit_block_path(block) %></td>
+        <td><%= link_to 'Destroy', block, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Block', new_block_path %>
